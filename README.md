@@ -6,8 +6,8 @@
 This repository contains code that adds 3D capabilities on top of
 browser-based SVGs.  It builds on top of [SVG.js](svgjs.com).
 
-See an example animation [here](nathancarter.github.io/svg3d), and its
-source code [here](index.html).  That page shows things like this,
+See an example animation [here](http://nathancarter.github.io/svg3d), and
+its source code [here](index.html).  That page shows things like this,
 animated:
 
 ![Example 3D screenshot](svg3d-example.png)
