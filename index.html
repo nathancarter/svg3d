@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='node_modules/svg.js/dist/svg.js'></script>
+    <script src='point.js'></script>
+    <script src='view.js'></script>
+    <script src='matrix.js'></script>
+    <script src='element3d.js'></script>
+    <script src='linesegment.js'></script>
+    <script src='polyline3d.js'></script>
+    <script src='spacecurve.js'></script>
+    <script src='polygon3d.js'></script>
+    <script>
+        SVG.on( document, 'DOMContentLoaded', function () {
+            drawing = SVG( 'drawing' ).size( 800, 800 );
+            var V = new View( drawing );
+            var cube = new Polyline3D( V, [  1,  1,  1,
+                                             1,  1, -1,
+                                            -1,  1, -1,
+                                            -1,  1,  1,
+                                             1,  1,  1,
+                                             1, -1,  1,
+                                             1, -1, -1,
+                                            -1, -1, -1,
+                                            -1, -1,  1,
+                                             1, -1,  1,
+                                             1, -1, -1,
+                                             1,  1, -1,
+                                            -1,  1, -1,
+                                            -1, -1, -1,
+                                            -1, -1,  1,
+                                            -1,  1,  1 ] );
+            var container1 = new Element3D( V );
+            container1.translate( -3, 0, 0 );
+            var square = new Polygon3D( V, [ 1,  1,  1,
+                                             1,  1, -1,
+                                            -1,  1, -1,
+                                            -1,  1,  1 ] );
+            var faces = new Element3D( V );
+            container1.addChild( faces );
+            faces.addChild( square );
+            faces.addChild( square.copy().rotateX( Math.PI/2 ) );
+            faces.addChild( square.copy().rotateX( -Math.PI/2 ) );
+            faces.addChild( square.copy().rotateX( Math.PI ) );
+            faces.addChild( square.copy().rotateZ( Math.PI/2 ) );
+            faces.addChild( square.copy().rotateZ( -Math.PI/2 ) );
+            var cube3 = cube.copy();
+            var container2 = new Element3D( V );
+            container2.addChild( cube3 );
+            container2.translate( 3, 0, 0 );
+            var spiral = new SpaceCurve( V, function ( t ) {
+                return ( new Point( 1.5*Math.cos( t ), t/3,
+                                    1.5*Math.sin( t ) ) );
+            }, -4*Math.PI, 4*Math.PI, 300 );
+            var counter = 0;
+            var tmp = setInterval( function () {
+                cube.rotateY( 0.01 )
+                    .fill( 'none' )
+                    .stroke( { width : 5 } );
+                container1.rotateY( 0.01 );
+                container2.rotateY( 0.01 );
+                cube3.rotateZ( 0.01 )
+                     .fill( 'none' )
+                     .stroke( { width : 3 } );
+                spiral.rotateX( 0.01 )
+                      .fill( 'none' )
+                      .stroke( { width : 5, color : '#f00' } );
+                faces.rotateX( 0.01 )
+                     .fill( { color : '#009' } )
+                     .stroke( { width : 3 } );
+                // if ( counter++ > 100 ) clearInterval( tmp );
+            }, 50 );
+        } );
+    </script>
+</head>
+<body>
+    <div id="drawing"></div>
+</body>
+</html>
